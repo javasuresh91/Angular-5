@@ -1,0 +1,88 @@
+<div class="container-fluid">
+    <div class="panel-group">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    <a href="#timeEntry" data-toggle="collapse">Check In/Out Time</a>
+                </div>
+            </div>
+            <div class="panel-collapse" id="timeEntry">
+                <div class="panel-body">
+                    <div class="alert alert-info" *ngIf="showMessage">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                        <strong>{{message.message}}</strong>
+                    </div>
+                    <form class="form-inline" (ngSubmit)=saveTimeSheet(formData.value) [formGroup]="formData">
+                        <div class="col-sm-4">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <label class="radio-inline">
+                                        <input type="radio" (click)="labelChange('Check In')" value="checkIn" formControlName="checkType">Check In
+                                    </label>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label class="radio-inline">
+                                        <input type="radio" (click)="labelChange('Check Out')" value="checkOut" formControlName="checkType">Check Out
+                                    </label>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" formControlName="dateTime" disabled="true">
+                        </div>
+                        <div class="col-sm-4">
+                            <button class="btn btn-primary">{{label}}</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    <a href="#timeHistory" data-toggle="collapse">Check in/out History</a>
+                </div>
+            </div>
+            <div class="panel-collapse" id="timeHistory">
+                <div class="panel-body">
+                    <div class="col-sm-6">
+                        <div class="form-group form-inline">
+                            <label for="duration"> Duration History </label>
+                            <select class="form-control" (change)="getTimeSheetHistory($event.target.value)">
+                                <option value="-5">Last 5 Days</option>
+                                <option value="-10">Last 10 Days</option>
+                                <option value="-30">Last 30 Days</option>
+                                <option value="-60">Last 60 Days</option>
+                                <option value="-120">Last 120 Days</option>
+                                <option value="-365">Last 1 Year</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>S.no</th>
+                                    <th>Date</th>
+                                    <th>Check In Time</th>
+                                    <th>Check Out Time</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let timeSheet of timeSheetHistory;let i=index">
+                                    <td>{{i+1}}</td>
+                                    <td>{{timeSheet.logDate}}</td>
+                                    <td>{{timeSheet.logInTime}}</td>
+                                    <td>{{timeSheet.logOutTime}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

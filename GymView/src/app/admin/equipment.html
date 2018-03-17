@@ -1,0 +1,119 @@
+<div class="container-fluid">
+    <div class="panel-group">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h5 class="panel-title">
+                    <a data-toggle="collapse" href="#equipmentAdd">Add Equipment</a>
+                </h5>
+            </div>
+            <div id="equipmentAdd" class="panel-collapse">
+                <div class="panel-body">
+                    <div class="alert alert-info" *ngIf="showMessage">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                        <strong>{{message.message}}</strong>
+                    </div>
+                    <form class="form-inline" (ngSubmit)="addEquipment(addFormData.value)" [formGroup]="addFormData">
+                        <h2></h2>
+                        <div class="form-group">
+                            <label for="eqiName">Equipment Name</label>
+                            <input type="text" id="eqiName" class="form-control" formControlName="name">
+                            <div class="text-danger" *ngIf="addFormData.controls.name.errors?.required">
+                                Required
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="qty">Quantity</label>
+                            <input type="number" id="qty" class="form-control" formControlName="qty">
+                            <input type="hidden" class="form-control" formControlName="status">
+                            <div class="text-danger" *ngIf="addFormData.controls.qty.errors">
+                                <div *ngIf="addFormData.controls.qty.errors?.required">
+                                    Required
+                                </div>
+                                <div *ngIf="addFormData.controls.qty.errors?.min">
+                                    Quantity should be more than ZERO
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-success" [disabled]="!addFormData.valid" value="Add">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    <a href="#equipmentList" data-toggle="collapse">View/Edit Equipment</a>
+                </div>
+            </div>
+            <div id="equipmentList" class="panel-collapse">
+                <div class="panel-body">
+                    <table class="table table-responsive table-hover">
+                        <thead>
+                            <tr>
+                                <th>Sno</th>
+                                <th>Name</th>
+                                <th>Quantity</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let data of equipmentList ; let i = index">
+                                <td>{{i+1}}</td>
+                                <td>{{data.name}}</td>
+                                <td>{{data.qty}}</td>
+                                <td>
+                                    <button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" (click)="populateData(data.id)">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </button>
+                                    <!-- <button class="btn btn-danger btn-xs" data-title="Delete">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </button> -->
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+    <div class="modal-dialog">
+        <form (ngSubmit)="updateEquipment(editFormData.value)" [formGroup]="editFormData">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </button>
+                    <h4 class="modal-title custom_align" id="Heading">Edit Equipment Details</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-info" *ngIf="altershowMessage">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                        <strong>{{alterMessage.message}}</strong>
+                    </div>
+                    <div class="form-group">
+                        <label for="eqiName">Equipment Name</label>
+                        <input class="form-control" type="text" placeholder="Equipment Name" formControlName="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="qty">Quantity</label>
+                        <input class="form-control" type="text" placeholder="Equipment Quantity" formControlName="qty">
+                        <input type="hidden" class="form-control" formControlName="status">
+                        <input type="hidden" class="form-control" formControlName="id">
+                    </div>
+                </div>
+                <div class="modal-footer ">
+                    <button type="submit" class="btn btn-warning btn-lg" style="width: 100%;">
+                        <span class="glyphicon glyphicon-ok-sign"></span> Update</button>
+                </div>
+            </div>
+        </form>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

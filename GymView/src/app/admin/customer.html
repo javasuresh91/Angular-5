@@ -1,0 +1,149 @@
+<div class="container-fluid">
+    <div class="panel-group">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    <a href="#newCustomer" data-toggle="collapse">
+                        {{formTitleLabel}}
+                    </a>
+                </div>
+            </div>
+            <div class="panel-collapse" id="newCustomer">
+                <div class="panel-body">
+                    <div dismiss-on-timeout="2000" class="alert alert-info" *ngIf="showMessage">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                        <strong>{{message.message}}</strong>
+                    </div>
+                    <form class="form-horizontal" [formGroup]="formData" (ngSubmit)="register(formData.value)">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="email" class="col-sm-3 control-label">Username</label>
+                                <div class="col-sm-9">
+                                    <input type="email" id="email" placeholder="Email" class="form-control" formControlName="userName">
+                                    <input type="hidden" formControlName="userType">
+                                    <input type="hidden" formControlName="status">
+                                    <div *ngIf="formData.controls.userName.errors" class="text-danger">Username is required</div>
+                                </div>
+                            </div>
+                            <div formGroupName="customer">
+                                <div class="form-group">
+                                    <label for="firstName" class="col-sm-3 control-label">Customer Name</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" placeholder="Customer Name" formControlName="customerName">
+                                        <div *ngIf="formData.controls.customer.controls.customerName.errors" class="text-danger">Name is required</div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="birthDate" class="col-sm-3 control-label">Address</label>
+                                    <div class="col-sm-9">
+                                        <textarea class="form-control" formControlName="address"></textarea>
+                                        <div *ngIf="formData.controls.customer.controls.address.errors" class="text-danger">Address is required</div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3">Gender</label>
+                                    <div class="col-sm-9">
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <label class="radio-inline">
+                                                    <input type="radio" id="femaleRadio" value="Female" formControlName="gender">Female
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <label class="radio-inline">
+                                                    <input type="radio" id="maleRadio" value="Male" formControlName="gender">Male
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <label class="radio-inline">
+                                                    <input type="radio" id="uncknownRadio" value="Unknown" formControlName="gender">Unknown
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6" formGroupName="customer">
+                            <div class="form-group">
+                                <label for="firstName" class="col-sm-3 control-label">Contact No</label>
+                                <div class="col-sm-9">
+                                    <input type="text" placeholder="Contact Number" class="form-control" formControlName="contactNumber">
+                                    <div *ngIf="formData.controls.customer.controls.contactNumber.errors" class="text-danger">
+                                        <div *ngIf="formData.controls.customer.controls.contactNumber.errors.required">Contact number is required</div>
+                                        <div *ngIf="formData.controls.customer.controls.contactNumber.errors?.minlength">Maximun 10 Character length</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="birthDate" class="col-sm-3 control-label">Date of Birth</label>
+                                <div class="col-sm-9">
+                                    <input type="date" id="birthDate" class="form-control" formControlName="dob">
+                                    <div *ngIf="formData.controls.customer.controls.dob.errors" class="text-danger">DOB is required</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="country" class="col-sm-3 control-label">Country</label>
+                                <div class="col-sm-9">
+                                    <select id="country" class="form-control" formControlName="country">
+                                        <option value="">Please choose one</option>
+                                        <option>India</option>
+                                        <option>Afghanistan</option>
+                                        <option>Bahamas</option>
+                                        <option>Cambodia</option>
+                                        <option>Denmark</option>
+                                        <option>Ecuador</option>
+                                        <option>Fiji</option>
+                                        <option>Gabon</option>
+                                        <option>Haiti</option>
+                                    </select>
+                                    <div *ngIf="formData.controls.customer.controls.country.errors" class="text-danger">Country is required</div>
+                                </div>
+                                <div class="form-actions">
+                                    <div class="col-sm-9 pull-right">
+                                        <br/>
+                                        <br/>
+                                        <button type="submit" [disabled]="!formData.valid" class="btn btn-success btn-md">Register</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    <a href="#listOfCustomer" data-toggle="collapse">Customer List</a>
+                </div>
+            </div>
+            <div class="panel-collapse" id="listOfCustomer">
+                <div class="panel-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>S.no</th>
+                                <th>Customer Name</th>
+                                <td>Contact Number</td>
+                                <td>Address</td>
+                                <td>Email Id</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let customer of customerList;let i=index">
+                                <td>{{i+1}}</td>
+                                <td>{{customer.customer.customerName}}</td>
+                                <td>{{customer.customer.contactNumber}}</td>
+                                <td>{{customer.customer.address}}</td>
+                                <td>{{customer.userName}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- ./container -->
